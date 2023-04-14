@@ -1,5 +1,7 @@
 package com.library.entity.book;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,29 +19,45 @@ public class BookRepositoryTest {
 	@Test
 	public void 책등록_test() {
 		System.out.println("책등록_test 실행");
+		
+		// given (데이터 준비)
+		String title = "junit5";
+		String author = "메타코딩";
+		
+		Book book = Book.builder()
+				.title(title)
+				.author(author)
+				.build();
+		
+		// when (테스트 실행)
+		Book bookPS = bookRepository.save(book);
+		
+		// then (검증)
+		assertEquals(title, bookPS.getTitle());
+		assertEquals(author, bookPS.getAuthor());
 	}
 	
 	// 1-2. 책 목록보기
 	@Test
 	public void 책목록보기_test() {
-		
+		System.out.println("책목록보기_test 실행");
 	}
 	
 	// 1-3. 책 한건보기
 	@Test
 	public void 책한건보기_test() {
-		
+		System.out.println("책한건보기_test 실행");
 	}
 	
 	// 1-4. 책 수정
 	@Test
 	public void 책수정_test() {
-		
+		System.out.println("책수정_test 실행");
 	}
 	
 	// 1-5. 책 삭제
 	@Test
 	public void 책삭제_test() {
-		
+		System.out.println("책삭제_test 실행");
 	}
 }
