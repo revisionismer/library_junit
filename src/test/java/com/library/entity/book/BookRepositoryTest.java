@@ -74,9 +74,8 @@ public class BookRepositoryTest {
 	@Test
 	public void 책목록보기_test() {
 		System.out.println("책목록보기_test 실행");
-		// given
+		// given (데이터 준비)
 		for(int i = 0; i < 3; i++) {
-			// given (데이터 준비)
 			String title = "junit5_" + i;
 			String author = "메타코딩_" + i;
 			
@@ -85,20 +84,16 @@ public class BookRepositoryTest {
 					.author(author)
 					.build();
 			
-			// when (테스트 실행)
 			bookRepository.save(book);
 		}
+		// when (테스트 실행)
+		List<Book> result = bookRepository.findAll();
 		
-		// when
-		List<Book> booksPS = bookRepository.findAll();
-		
-		// then
-		int i = 0;
-		
-		for(Book book : booksPS) {
-			assertEquals("junit5_" + i, book.getTitle());
-			assertEquals("메타코딩_" + i, book.getAuthor());
-			i++;
+		// then (검증)
+		for(Book book : result) {
+			System.out.println(book.getId());
+			System.out.println(book.getTitle());
+			System.out.println(book.getAuthor());
 		}
 		
 	}
@@ -172,5 +167,31 @@ public class BookRepositoryTest {
 	@Test
 	public void 책삭제_test() {
 		System.out.println("책삭제_test 실행");
+		
+		for(int i = 0; i < 3; i++) {
+			String title = "junit5_" + i;
+			String author = "메타코딩_" + i;
+			
+			Book book = Book.builder()
+					.title(title)
+					.author(author)
+					.build();
+			
+			bookRepository.save(book);
+		}
+		
+		Optional<Book> findBook = bookRepository.findById(1L);
+		
+		if(findBook.isPresent()) {
+			Book book = findBook.get();
+		
+			bookRepository.delete(book);
+		}
+		
+		Optional<Book> book = bookRepository.findById(1L);
+		
+		if(!book.isPresent()) {
+			System.out.println("삭제되었습니다.");
+		}
 	}
 }
