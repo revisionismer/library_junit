@@ -131,7 +131,7 @@ public class BookRepositoryTest {
 	
 	}
 	
-	// 1-4. 책 수정
+	// 1-4. 책 수정 -> 테스트 완료
 	@Test
 	public void 책수정_test() {
 		System.out.println("책수정_test 실행");
