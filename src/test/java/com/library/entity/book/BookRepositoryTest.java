@@ -168,18 +168,9 @@ public class BookRepositoryTest {
 	public void 책삭제_test() {
 		System.out.println("책삭제_test 실행");
 		
-		for(int i = 0; i < 3; i++) {
-			String title = "junit5_" + i;
-			String author = "메타코딩_" + i;
-			
-			Book book = Book.builder()
-					.title(title)
-					.author(author)
-					.build();
-			
-			bookRepository.save(book);
-		}
+		// given
 		
+		// when
 		Optional<Book> findBook = bookRepository.findById(1L);
 		
 		if(findBook.isPresent()) {
@@ -190,6 +181,7 @@ public class BookRepositoryTest {
 		
 		Optional<Book> book = bookRepository.findById(1L);
 		
+		// then
 		if(!book.isPresent()) {
 			System.out.println("삭제되었습니다.");
 		}
