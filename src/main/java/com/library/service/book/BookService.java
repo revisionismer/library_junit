@@ -3,6 +3,7 @@ package com.library.service.book;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,17 @@ public class BookService {
 	}
 	
 	// 1-3. 책 한건보기
+	public BookRespDto readBookById(Long bookId) {
+		Optional<Book> bookOp = bookRepository.findById(bookId);
+		
+		if(bookOp.isPresent()) {
+			Book findBook = bookOp.get();
+			
+			return new BookRespDto().toDto(findBook);
+		} else {
+			throw new RuntimeException("해당 도서가 존재하지 않습니다.");
+		}
+	}
 	
 	// 1-4. 책 삭제
 	
