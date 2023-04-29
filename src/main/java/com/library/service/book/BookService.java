@@ -64,6 +64,15 @@ public class BookService {
 	}
 	
 	// 1-4. 책 삭제
+	@Transactional(rollbackFor = RuntimeException.class)
+	public void deleteBookById(Long bookId) {
+		// 1-4-1. id가 실제 db에 없는 값이여도 실행은되는데 id값이 만약 null이면 illegalArgumentException 터진다.
+		try {
+			bookRepository.deleteById(bookId);
+		} catch (Exception e) {
+			throw new RuntimeException("id값이 null입니다.");
+		}
+	}
 	
 	// 1-5. 책 수정
 }
