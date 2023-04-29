@@ -75,4 +75,17 @@ public class BookService {
 	}
 	
 	// 1-5. 책 수정
+	@Transactional(rollbackFor = RuntimeException.class)
+	public void updateBook(Long bookId, BookSaveReqDto dto) {
+		Optional<Book> bookOp = bookRepository.findById(bookId);
+		
+		if(bookOp.isPresent()) {
+			Book bookPS = bookOp.get();
+			
+			// 1-5-1. 변경 감지
+			bookPS.update(dto.getTitle(), dto.getAuthor());
+		} else {
+			throw new RuntimeException("해당 id를 찾을 수 없습니다.");
+		}
+	}
 }
