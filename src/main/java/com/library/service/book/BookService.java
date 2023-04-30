@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.library.entity.book.Book;
 import com.library.entity.book.BookRepository;
+import com.library.util.mail.MailSender;
 import com.library.web.dto.book.BookRespDto;
 import com.library.web.dto.book.BookSaveReqDto;
 
@@ -20,11 +21,19 @@ import lombok.RequiredArgsConstructor;
 public class BookService {
 
 	private final BookRepository bookRepository;
+	private final MailSender mailSender;
 	
 	// 1-1. 책 등록
 	@Transactional(rollbackFor = RuntimeException.class)
 	public BookRespDto registerBook(BookSaveReqDto dto) {	
 		Book bookPS = bookRepository.save(dto.toEntity());
+		
+		if(bookPS != null) {
+			if(!mailSender.send()) {
+				throw new RuntimeException("메일이 전송되지 않았습니다.");
+			}
+		}
+		
 		return new BookRespDto().toDto(bookPS);
 	}
 	
