@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 // import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 // import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.library.entity.book.Book;
 import com.library.entity.book.BookRepository;
 import com.library.util.mail.MailSender;
 import com.library.web.dto.book.BookRespDto;
@@ -77,6 +81,31 @@ public class BookServiceTest {
 		// 4-7. assertJ : aserrtThat 이용
 		assertThat(dto.getTitle()).isEqualTo(bookRespDto.getTitle());
 		assertThat(dto.getAuthor()).isEqualTo(bookRespDto.getAuthor());
-		
 	}	
+	
+	
+	@Test
+	public void 책목록보기_테스트() {
+		// given(파라미터로 들어올 데이터)
+		
+		// stub(가설)
+		List<Book> books = new ArrayList<>();
+		books.add(new Book(1L, "junit강의", "메타코딩"));
+		books.add(new Book(2L, "스프링 강의", "겟인데어"));
+		
+		when(bookRepository.findAll()).thenReturn(books);
+		
+		// when(실제로 가져올 데이터)
+		List<BookRespDto> result = bookService.readAllBook();
+		
+		for(BookRespDto dto : result) {
+			System.out.println(dto.getId());
+			System.out.println(dto.getTitle());
+			System.out.println(dto.getAuthor());
+		}
+		
+		// then(검증)
+		assertThat(result.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
+		assertThat(result.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
+	}
 }
