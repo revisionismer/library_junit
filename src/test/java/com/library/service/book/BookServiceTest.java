@@ -127,4 +127,29 @@ public class BookServiceTest {
 		assertThat(result.getTitle()).isEqualTo(book.getTitle());
 		assertThat(result.getAuthor()).isEqualTo(book.getAuthor());
 	}
+	
+	@Test
+	public void 책수정하기_테스트_Mock() {
+		// given : 7-1. 
+		Long id = 1L;
+		Book book = new Book(1L, "junit 강의", "메타코딩");
+		Optional<Book> bookOp = Optional.of(book);
+		
+		BookSaveReqDto dto = new BookSaveReqDto();
+		dto.setTitle("포토그램");
+		dto.setAuthor("겟인데어");
+		
+		// stub(가설) : 7-2. 가짜  환경에 데이터 셋팅
+		when(bookRepository.findById(id)).thenReturn(bookOp);
+		
+		// when(실제로 가져올 데이터) : 7-3. 가짜 환경에 올라와 있는 데이터를 수정한다.
+		bookService.updateBook(id, dto);
+		BookRespDto findBook = bookService.readBookById(id);
+		
+		// then : 7-4. 검증
+		assertThat(findBook.getTitle()).isEqualTo(dto.getTitle());
+		assertThat(findBook.getAuthor()).isEqualTo(dto.getAuthor());
+	}
+	
+	// 참고 : 책 삭제하기 테스트는 생략
 }
