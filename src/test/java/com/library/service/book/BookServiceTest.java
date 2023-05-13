@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -107,5 +108,23 @@ public class BookServiceTest {
 		// then(검증)
 		assertThat(result.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
 		assertThat(result.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
+	}
+	
+	@Test
+	public void 책한건보기_테스트_Mock() {
+		// given : 6-1. 테스트에 사용할 데이터 준비
+		Long id = 1L;
+		Book book = new Book(1L, "junit 강의", "메타코딩");
+		Optional<Book> bookOp = Optional.of(book);
+		
+		// stub(가설) : 6-2. 가짜 환경에 데이터 셋팅
+		when(bookRepository.findById(id)).thenReturn(bookOp);
+		
+		// when(실제로 가져올 데이터) : 6-3. 가짜 환경에 올라온 데이터를 가져온다.
+		BookRespDto result = bookService.readBookById(id);
+		
+		// then(검증) : 6-4. assertJ : assertThat 이용
+		assertThat(result.getTitle()).isEqualTo(book.getTitle());
+		assertThat(result.getAuthor()).isEqualTo(book.getAuthor());
 	}
 }
