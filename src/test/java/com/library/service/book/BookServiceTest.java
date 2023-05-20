@@ -127,7 +127,7 @@ public class BookServiceTest {
 		when(bookRepository.findById(id)).thenReturn(bookOp);
 		
 		// when(실제로 가져올 데이터) : 6-3. 가짜 환경에 올라온 데이터를 가져온다.
-		BookRespDto result = bookService.readBookById(id);
+		BookRespDto result = bookService.readBookByBookId(id);
 		
 		// then(검증) : 6-4. assertJ : assertThat 이용
 		assertThat(result.getTitle()).isEqualTo(book.getTitle());
@@ -150,7 +150,7 @@ public class BookServiceTest {
 		
 		// when(실제로 가져올 데이터) : 7-3. 가짜 환경에 올라와 있는 데이터를 수정한다.
 		bookService.updateBook(id, dto);
-		BookRespDto findBook = bookService.readBookById(id);
+		BookRespDto findBook = bookService.readBookByBookId(id);
 		
 		// then : 7-4. 검증
 		assertThat(findBook.getTitle()).isEqualTo(dto.getTitle());
