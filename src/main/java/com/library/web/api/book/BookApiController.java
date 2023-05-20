@@ -1,7 +1,14 @@
 package com.library.web.api.book;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +22,7 @@ import com.library.service.book.BookService;
 import com.library.web.dto.CMRespDto;
 import com.library.web.dto.book.BookRespDto;
 import com.library.web.dto.book.BookSaveReqDto;
+import com.library.web.handler.exception.api.CustomValidationApiException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +35,17 @@ public class BookApiController {
 	
 	// 1-1. 책 등록
 	@PostMapping("/books")
-	public ResponseEntity<?> saveBook(@RequestBody BookSaveReqDto bookSaveReqDto) {
+	public ResponseEntity<?> saveBook(@RequestBody @Valid BookSaveReqDto bookSaveReqDto, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errorMap = new HashMap<>();
+			
+			for(FieldError error : bindingResult.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+			}
+			// 2023-05-17 -> api exception 처리 완료 
+			throw new CustomValidationApiException("도서 저장 실패", errorMap);
+		}
 		
 		BookRespDto result = bookService.registerBook(bookSaveReqDto);
 		
