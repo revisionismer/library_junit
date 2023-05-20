@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.library.service.book.BookService;
 import com.library.web.dto.CMRespDto;
+import com.library.web.dto.book.BookListRespDto;
 import com.library.web.dto.book.BookRespDto;
 import com.library.web.dto.book.BookSaveReqDto;
 import com.library.web.handler.exception.api.CustomValidationApiException;
@@ -55,7 +56,11 @@ public class BookApiController {
 	// 1-2. 책 목록보기
 	@GetMapping("/books")
 	public ResponseEntity<?> findAllBook() {
-		return new ResponseEntity<>(new CMRespDto<>(1, "도서 리스트 불러오기", bookService.readAllBook()), HttpStatus.OK);
+//		List<BookRespDto> result = bookService.readAllBook();
+		
+		BookListRespDto result = bookService.readAllBook();
+		
+		return new ResponseEntity<>(new CMRespDto<>(1, "도서 리스트 불러오기 성공", result), HttpStatus.OK);
 	}
 	
 	// 1-3. 책 한건 보기
