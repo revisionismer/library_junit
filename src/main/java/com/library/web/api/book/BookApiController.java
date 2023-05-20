@@ -83,7 +83,19 @@ public class BookApiController {
 	
 	// 1-5. 책 수정하기
 	@PutMapping("/books/{bookId}")
-	public ResponseEntity<?> updateBook() {
-		return new ResponseEntity<>(new CMRespDto<>(1, "도서 수정하기", null), HttpStatus.OK);
+	public ResponseEntity<?> updateBook(@PathVariable("bookId") Long bookId, @RequestBody @Valid BookSaveReqDto bookSaveReqDto, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			Map<String, String> errorMap = new HashMap<>();
+			
+			for(FieldError error : bindingResult.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+			}
+			throw new CustomValidationApiException("도서 정보 수정 실패", errorMap);
+		}
+		
+		BookRespDto result = bookService.updateBook(bookId, bookSaveReqDto);
+		
+		return new ResponseEntity<>(new CMRespDto<>(1, bookId + "번 도서 수정하기", result), HttpStatus.OK);
 	}
 }
