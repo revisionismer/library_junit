@@ -65,17 +65,20 @@ public class BookApiController {
 	
 	// 1-3. 책 한건 보기
 	@GetMapping("/books/{bookId}")
-	public ResponseEntity<?> findBookById(@PathVariable("bookId") Long bookId) {
+	public ResponseEntity<?> findBookByBookId(@PathVariable("bookId") Long bookId) {
 		
-		BookRespDto dto = bookService.readBookById(bookId);
+		BookRespDto dto = bookService.readBookByBookId(bookId);
 		
 		return new ResponseEntity<>(new CMRespDto<>(1, bookId + "번 도서 불러오기", dto), HttpStatus.OK);
 	}
 	
 	// 1-4. 책 삭제하기
 	@DeleteMapping("/books/{bookId}")
-	public ResponseEntity<?> deleteBookById(@PathVariable("bookId") Long bookId) {
-		return new ResponseEntity<>(new CMRespDto<>(1, bookId +"도서 삭제하기", null), HttpStatus.OK);
+	public ResponseEntity<?> deleteBookByBookId(@PathVariable("bookId") Long bookId) {
+		
+		bookService.deleteBookById(bookId);
+		
+		return new ResponseEntity<>(new CMRespDto<>(1, bookId +"번 도서 삭제하기", null), HttpStatus.OK);
 	}
 	
 	// 1-5. 책 수정하기
