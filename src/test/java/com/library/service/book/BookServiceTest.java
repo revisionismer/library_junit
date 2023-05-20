@@ -21,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import com.library.entity.book.Book;
 import com.library.entity.book.BookRepository;
 import com.library.util.mail.MailSender;
+import com.library.web.dto.book.BookListRespDto;
 import com.library.web.dto.book.BookRespDto;
 import com.library.web.dto.book.BookSaveReqDto;
 
@@ -97,17 +98,22 @@ public class BookServiceTest {
 		when(bookRepository.findAll()).thenReturn(books);
 		
 		// when(실제로 가져올 데이터)
-		List<BookRespDto> result = bookService.readAllBook();
-		
+//		List<BookRespDto> result = bookService.readAllBook();
+	
+		BookListRespDto result = bookService.readAllBook();
+/*		
 		for(BookRespDto dto : result) {
 			System.out.println(dto.getId());
 			System.out.println(dto.getTitle());
 			System.out.println(dto.getAuthor());
 		}
-		
+*/		
 		// then(검증)
-		assertThat(result.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
-		assertThat(result.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
+//		assertThat(result.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
+//		assertThat(result.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
+		
+		assertThat(result.getItems().get(0).getTitle()).isEqualTo(books.get(0).getTitle());
+		assertThat(result.getItems().get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
 	}
 	
 	@Test

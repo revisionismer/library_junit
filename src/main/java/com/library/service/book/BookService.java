@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.library.entity.book.Book;
 import com.library.entity.book.BookRepository;
 import com.library.util.mail.MailSender;
+import com.library.web.dto.book.BookListRespDto;
 import com.library.web.dto.book.BookRespDto;
 import com.library.web.dto.book.BookSaveReqDto;
 
@@ -38,7 +39,8 @@ public class BookService {
 	}
 	
 	// 1-2. 책목록보기
-	public List<BookRespDto> readAllBook() {
+//	public List<BookRespDto> readAllBook() {
+	public BookListRespDto readAllBook() {
 
 		/* 방법 1 : 일반적인 방법
 		List<Book> result = bookRepository.findAll();
@@ -65,10 +67,23 @@ public class BookService {
 				.collect(Collectors.toList());
 		*/
 			
-		/* 방법 4 : java 8 stream 3 : 방법 3번을 람다식 형태로 변형 */
+		/* 방법 4 : java 8 stream 3 : 방법 3번을 람다식 형태로 변형
 		return bookRepository.findAll().stream()
 				.map( (bookPS) -> bookPS.toDto() )
-				.collect(Collectors.toList());		
+				.collect(Collectors.toList());	
+		*/
+		/* 방법 5 : java 8 stream 4 : return 타입 통일(컬렉션 객체만 사용 했을 경우 문제점 해결) */
+		List<BookRespDto> dtos = bookRepository.findAll().stream()
+				.map( (bookPS) -> bookPS.toDto() )
+				.collect(Collectors.toList());
+	
+		// 2023-05-19 -> 컬렉션 객체로 return시 발생할 수 있는 문제점 해결(data 응답시 list형태의 컬렉션 객체로 return하는건 좋은 방법이 아니다)
+//		BookListRespDto bookListRespDto = BookListRespDto.builder().bookList(dtos).build();
+	
+		BookListRespDto bookListRespDto = new BookListRespDto(dtos);
+		
+		return bookListRespDto;
+		
 		}
 	
 	// 1-3. 책 한건보기
