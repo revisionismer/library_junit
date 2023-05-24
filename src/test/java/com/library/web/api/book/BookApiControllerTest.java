@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.library.service.book.BookService;
 import com.library.web.dto.book.BookSaveReqDto;
 
 // 통합테스트 (C, S, R)
@@ -25,9 +24,6 @@ import com.library.web.dto.book.BookSaveReqDto;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)  // 1-1. @SpringBootTest 어노테이션을 붙이면 통합 테스트가 된다.
 public class BookApiControllerTest {
 
-	@Autowired
-	private BookService bookService;
-	
 	@Autowired
 	private TestRestTemplate rt;
 	

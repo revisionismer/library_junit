@@ -76,6 +76,8 @@ dependencies {
 	/* 18. assertj */
 	testImplementation("org.assertj:assertj-core:3.23.1")
 	
+	/* 19. h2 database */
+	runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
