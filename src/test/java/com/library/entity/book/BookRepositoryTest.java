@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
 @DataJpaTest  // 2-1. 프로젝트가 실행될때 테스트 환경에서 해당 Repository만 메모리에 올려 실행한다는 뜻.(controller, service는 제외)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 2-2. EmbeddedDatabse를 사용 안함.
 public class BookRepositoryTest {
