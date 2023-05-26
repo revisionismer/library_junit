@@ -82,9 +82,8 @@ public class BookService {
 	
 		BookListRespDto bookListRespDto = new BookListRespDto(dtos);
 		
-		return bookListRespDto;
-		
-		}
+		return bookListRespDto;	
+	}
 	
 	// 1-3. 책 한건보기
 	public BookRespDto readBookByBookId(Long bookId) {
