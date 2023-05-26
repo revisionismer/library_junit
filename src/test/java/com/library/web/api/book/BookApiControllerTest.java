@@ -193,4 +193,40 @@ public class BookApiControllerTest {
 		assertThat(code).isEqualTo(1L);
 		assertThat(status_code).isEqualTo(200);
 	}
+	
+	@Test
+	@Order(6)
+	public void updateBook_test() throws Exception {
+		// given
+		Long bookId = 1L;
+		
+		BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+		bookSaveReqDto.setTitle("롤리팝");
+		bookSaveReqDto.setAuthor("투애니원");
+		
+		String body = om.writeValueAsString(bookSaveReqDto);  // json 형태로 변환
+		
+		// when
+		HttpEntity<String> request = new HttpEntity<>(body, headers);
+		ResponseEntity<String> response = rt.exchange("/api/books/" + bookId, HttpMethod.PUT, request, String.class);
+		
+		System.out.println(response.getBody());
+		System.out.println(response.getStatusCodeValue());
+		
+		// then
+		DocumentContext dc = JsonPath.parse(response.getBody());
+		
+		System.out.println(dc.jsonString());
+		
+		Integer code = dc.read("$.code");
+		int status_code = response.getStatusCodeValue();
+		String title = dc.read("$.data.title");
+		String author = dc.read("$.data.author");
+		
+		assertThat(code).isEqualTo(1L);
+		assertThat(status_code).isEqualTo(200);
+		assertThat(title).isEqualTo(bookSaveReqDto.getTitle());
+		assertThat(author).isEqualTo(bookSaveReqDto.getAuthor());
+	}
+	// 2023-05-24 -> h2 데이터베이스 설정 추가하고 설정파일을 dev, prod로 분류
 }
