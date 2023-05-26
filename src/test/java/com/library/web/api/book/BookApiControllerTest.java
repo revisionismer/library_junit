@@ -141,4 +141,31 @@ public class BookApiControllerTest {
 		assertThat(title).isEqualTo("스프링4강");
 		
 	}
+	
+	@Test
+	@Order(4)
+	public void getBookOne_test() throws Exception {
+		// given
+		Long bookId = 1L;
+		
+		// when
+		HttpEntity<String> request = new HttpEntity<>(null, headers);
+		ResponseEntity<String> response = rt.exchange("/api/books/" + bookId, HttpMethod.GET, request, String.class);
+		
+		System.out.println(response.getBody());
+		
+		// then
+		DocumentContext dc = JsonPath.parse(response.getBody()); // 3-1. response 객체에서 json 데이터 파싱
+		
+		System.out.println(dc.jsonString());
+		
+		Integer code = dc.read("$.code");
+		String message = dc.read("$.message");
+		String title = dc.read("$.data.title");
+		
+		System.out.println("code = " + code + ", message = " + message + ", title = " + title);
+		
+		assertThat(code).isEqualTo(1L);
+		assertThat(title).isEqualTo("스프링4강");
+	}
 }
