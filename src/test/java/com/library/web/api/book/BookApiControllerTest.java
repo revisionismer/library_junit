@@ -168,4 +168,29 @@ public class BookApiControllerTest {
 		assertThat(code).isEqualTo(1L);
 		assertThat(title).isEqualTo("스프링4강");
 	}
+	
+	@Test
+	@Order(5)
+	public void deleteBookOne_test() throws Exception {
+		// given
+		Long bookId = 2L;
+		
+		// when
+		HttpEntity<String> request = new HttpEntity<>(null, headers);
+		ResponseEntity<String> response = rt.exchange("/api/books/" + bookId, HttpMethod.DELETE, request, String.class);
+		
+		System.out.println(response.getBody());
+		System.out.println(response.getStatusCode());
+		
+		// then
+		DocumentContext dc = JsonPath.parse(response.getBody());
+		
+		System.out.println(dc.jsonString());
+		
+		Integer code = dc.read("$.code");
+		int status_code = response.getStatusCodeValue();
+		
+		assertThat(code).isEqualTo(1L);
+		assertThat(status_code).isEqualTo(200);
+	}
 }
